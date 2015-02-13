@@ -1,0 +1,196 @@
+stress:
+  description: The standard Cassandra benchmark/stress tool.
+  params:
+    num-different-keys:
+      description: |
+          Number of different keys (if < NUM-KEYS, the same key will re-used
+          multiple times), default:NUM-KEYS
+      type: integer
+      default: 0
+    truststore:
+      description: SSL - full path to truststore.
+      type: string
+      default: ""
+    cardinality:
+      description: Number of unique values stored in columns.
+      type: integer
+      default: 50
+    enable-cql:
+      description: Perform queries using CQL2 (Cassandra Query Language)
+      type: boolean
+      default: false
+    enable-cql3:
+      description: Perform queries using CQL3 (Cassandra Query Language)
+      type: boolean
+      default: false
+    transport-factory:
+      description: |
+        Fully-qualified TTransportFactory class name for creating a connection.
+        Note: For Thrift over SSL, use
+        org.apache.cassandra.stress.SSLTransportFactory.
+      type: string
+      default: ""
+    skip-keys:
+      description: Fraction of keys to skip initially
+      type: integer
+      value: 0
+    strategy-properties:
+      description: |
+        Replication strategy properties in the following format:
+        <dc_name>:<num>,<dc_name>:<num>,...
+      type: string
+      default: ""
+    ssl-protocol:
+      description: SSL - connections protocol to use
+      type: string
+      default: "TLS"
+    compression:
+      description: Specify the type of compression to use for sstable
+      type: string
+      default: ""
+    ciphers:
+      description: SSL - comma-separated list of encryption suites to use.
+      type: string
+      default: ""
+    throttle:
+      description: |
+        Throttle the total number of operations per second to a maximum amount.
+      type: integer
+      default: 0
+    keep-trying:
+      description: Retry on-going operation N times in case of failure.
+      value: integer
+      default: 10
+    comparator:
+      description: |
+          Specifies which column compactor to use. Supported types are:
+          TimeUUIDType, AsciiType, and UTF8Type.
+      type: string
+      default: ""
+    replication-on-write:
+      description: |
+        Set replication_on_write to false for counters. Only counter add with
+        CL=ONE will work.
+      type: boolean
+      default: true
+    average-size:
+      description: Generate column values of average rather than specific size.
+      type: boolean
+      default: false
+    query-names:
+      description: |
+        Comma-separated list of column names to retrieve from each row.
+      type: string
+      default: ""
+    use-prepared-statements:
+      description: |
+        Perform queries using prepared statements (only applicable to CQL).
+      type: boolean
+      default: false
+    column-size:
+      description: Size of column values in bytes.
+      type: integer
+      default: 34
+    replication-strategy:
+      description: |
+        Replication strategy to use (only on insert if keyspace does not exist).
+      type: string
+      default: ""
+    store-type:
+      description: SSL - type of store
+      type: string
+      default: ""
+    compaction-strategy:
+      description: CompactionStrategy to use.
+      type: string
+      default: ""
+    ssl-alg:
+      description: SSL - algorithm
+      type: string
+      default: "SunX509"
+    keys-per-call:
+      description: Number of keys to get_range_slices or multiget per call.
+      type: integer
+      default: 1000
+    consistency-level:
+      description: |
+        Consistency level to use (ONE, QUORUM, LOCAL_CORUM, EACH_QUORUM, ALL,
+        ANY)
+      type: string
+      default: "ONE"
+    native-protocol:
+      description: Use the binary native protocol (only with CQL3 enabled)
+      type: boolean
+      default: false
+    columns:
+      description: Number of columns per key
+      type: integer
+      default: 5
+    num-keys:
+      description: Number of keys
+      type: integer
+      default: 1000000
+    operations:
+      description: |
+        Operation to perform (INSERT, READ, RANGE_SLICE, INDEXED_RANGE_SLICE,
+        MULTI_GET, COUNTER_ADD, COUNTER_GET)
+      type: string
+      default: "INSERT"
+    replication-factor:
+      description: |
+        Replication Factor to use when creating needed column families.
+      type: integer
+      default: 1
+    keep-going:
+      description: Ignore errors inserting or reading
+      type: boolean
+      default: false
+    truststore-password:
+      description: SSL - full path to truststore
+      type: string
+      default: ""
+    supercolumns:
+      description: The number of super columns per key.
+      type: integer
+      default: 1
+    threads:
+      description: The number of threads to use.
+      type: integer
+      default: 50
+    stdev:
+      description: Standard Deviation Factor
+      type: number
+      default: 0.1
+    random:
+      description: Use random key generator (STDEV will have no effect)
+      type: boolean
+      default: false
+    family-type:
+      description: Column Family Type (Super, Standard)
+      type: string
+      default: "Standard"
+    create-index:
+      description: Type of index to create on needed column families
+      type: string
+      default: ""
+# Options:
+# -D NODESFILE, --nodesfile=NODESFILE
+# 		File containing host nodes (one per line)
+#
+# -f FILE, --file=FILE
+# 		Write output to given file
+#
+# -d NODES, --nodes=NODES
+# 		Host nodes (comma separated), default:locahost
+
+# -un USERNAME, --username=USERNAME
+# 		Username for authentication.
+#
+# -i PROGRESS-INTERVAL, --progress-interval=PROGRESS-INTERVAL
+# 		Progress Report Interval (seconds), default:10
+#
+# -p PORT, --port=PORT
+# 		Thrift port, default:9160
+#
+# -pw PASSWORD, --password=PASSWORD
+# 		Password for authentication.
