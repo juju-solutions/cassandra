@@ -6,15 +6,15 @@ chlp benchmark-start || true
 # /etc/cassandra/cassandra.yaml - listen_address: 10.0.3.124
 ARGS=''
 KEYSPACE='Keyspace1'
-ARG=`action-get operations`
 
+ARG=`action-get operations`
 if [ -n "$ARG" ]; then
     ARGS+=" -o ${ARG:-INSERT}"
 fi
 
 
 ARG=`action-get num-different-keys`
-if [ -n "$ARG" ]; then
+if [ -n "$ARG" ] && ["$ARG" -gt "0"]; then
     ARGS+=" -F $ARG"
 fi
 
@@ -69,7 +69,7 @@ if [ -n "$ARG" ]; then
 fi
 
 ARG=`action-get throttle`
-if [ -n "$ARG" ]; then
+if [ -n "$ARG" ] && [ "$ARG" -gt "0" ]; then
     ARGS+=" -th $ARG"
 fi
 
@@ -139,8 +139,8 @@ if [ -n "$ARG" ]; then
 fi
 
 ARG=`action-get native-protocol`
-if [ -n "$ARG" ]; then
-    ARGS+=" -b $ARG"
+if [ "$ARG" ] && [ "$ARG" eq "True"]; then
+    ARGS+=" --enable-native-protocol"
 fi
 
 ARG=`action-get columns`
