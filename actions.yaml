@@ -33,7 +33,7 @@ stress:
     skip-keys:
       description: Fraction of keys to skip initially
       type: integer
-      value: 0
+      default: 0
     strategy-properties:
       description: |
         Replication strategy properties in the following format:
@@ -59,7 +59,7 @@ stress:
       default: 0
     keep-trying:
       description: Retry on-going operation N times in case of failure.
-      value: integer
+      type: integer
       default: 10
     comparator:
       description: |
