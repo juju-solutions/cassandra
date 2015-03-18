@@ -18,7 +18,7 @@ See [cassandra.apache.org](http://cassandra.apache.org) for more information.
 
 Cassandra deployments are relatively simple in that they consist of a set of
 Cassandra nodes which seed from each other to create a ring of servers:
-    
+
     juju deploy --repository . local:cassandra
     juju add-unit -n 2 cassandra
 
@@ -74,10 +74,15 @@ Cassandra sets both is minimum and maximum heap size on startup so will
 pre-allocate all memory to avoid freezes during operation (this happens
 during normal operation as more memory is allocated to heap.
 
+# Benchmarking
+
+The Cassandra charm is capable of running benchmarks against the deployed service(s).
+
+    juju action do cassandra/0 stress num-keys=1000
+
 # Contact Information
 
 ## Cassandra
 
 - [Apache Cassandra homepage](http://cassandra.apache.org/)
 - [Cassandra Getting Started](http://wiki.apache.org/cassandra/GettingStarted)
-

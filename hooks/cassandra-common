@@ -95,7 +95,7 @@ install_cassandra () {
       # Use port 80 to get the keyserver key.
       apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys ${APT_REPO_KEY}
     fi
-    if [[ -n "${APT_REPO_SPEC}" ]]; then 
+    if [[ -n "${APT_REPO_SPEC}" ]]; then
       echo "${APT_REPO_SPEC}" > /etc/apt/sources.list.d/cassandra.list
     fi
     # Update the repositories
@@ -104,7 +104,10 @@ install_cassandra () {
     # Ensure that cassandra does not startup before we have configured it
     disable_cassandra_start
     # Install the package
-    DEBIAN_FRONTEND=noninteractive apt-get -qq install -y cassandra python-cheetah dnsutils bzr ${EXTRA_PACKAGES}
+    DEBIAN_FRONTEND=noninteractive apt-get -qq install -y cassandra python-cheetah python-pip dnsutils bzr ${EXTRA_PACKAGES}
+
+    # Install charm-helpers for benchmarking support
+    pip install charmhelpers
   fi
   bzr_ci || :
 }
@@ -295,7 +298,7 @@ configure_cassandra () {
       sed -i -r -e "s/^(# )?(num_tokens):.*/#\2: ${NUM_TOKENS}/" \
          -e "s/^(# )?(initial_token):.*/\2: ${INITIAL_TOKEN}/" \
          ${CASSANDRA_YML}
-  elif [ $NUM_TOKENS -gt 0 ] && [ -z "$INITIAL_TOKEN" ]; then 
+  elif [ $NUM_TOKENS -gt 0 ] && [ -z "$INITIAL_TOKEN" ]; then
       sed -i -r -e "s/^(# )?(num_tokens):.*/\2: ${NUM_TOKENS}/" \
          -e "s/^(# )?(initial_token):.*/# \2: ${INITIAL_TOKEN}/" \
          ${CASSANDRA_YML}
@@ -383,7 +386,7 @@ configure_cassandra () {
   else
     sed -i -e "s/^[#]MAX_HEAP_SIZE=.*/#MAX_HEAP_SIZE=\"${HEAP_SIZE}\"/" \
            -e "s/^[#]HEAP_NEWSIZE=.*/#HEAP_NEWSIZE=\"${NEW_GEN_SIZE}\"/" ${CASSANDRA_ENV}
-  fi 
+  fi
   local use_simpleauth=$(config-get use-simpleauth)
   if [[ ${use_simpleauth} == True ]];then
       local auth_opts
@@ -523,7 +526,7 @@ nodestatus() {
     local MIN_REL=${VER#*.}
     local MIN=${MIN_REL%%.*}
     local RING_COLS='$3$4'
-    if [ $MAJ == "0" ] || ([ $MAJ == "1" ] && [ $MIN == "0" ]); then 
+    if [ $MAJ == "0" ] || ([ $MAJ == "1" ] && [ $MIN == "0" ]); then
         # nodetool ring columns are different in 1.0 and lower
         RING_COLS='$4$5'
     fi
@@ -654,17 +657,17 @@ case $COMMAND in
     test -d ${ETC_CASSANDRA}/.bzr || bzr init ${ETC_CASSANDRA} && bzr add ${ETC_CASSANDRA}
     bzr_ci "main:${COMMAND}" ${ETC_CASSANDRA} || :
     # Update the cassandra environment with the appropriate JMX port
-    configure_jmx_port 
+    configure_jmx_port
     bzr_ci || :
     # Construct the cassandra.yaml file from the appropriate information above
-    configure_cassandra 
+    configure_cassandra
     bzr_ci || :
     run_exec_d_hooks "post-install"
     ;;
   config-changed)
     needs_restart=
     # Update the cassandra environment with the appropriate JMX port
-    configure_jmx_port 
+    configure_jmx_port
     bzr_ci && needs_restart=:
     # Construct the cassandra.yaml file from the appropriate information above
     configure_cassandra
@@ -692,7 +695,7 @@ case $COMMAND in
     fi
     ;;
   database-relation-joined)
-    setup_database_interface 
+    setup_database_interface
     ;;
   cluster-relation-joined)
     juju-log "Joining cassandra cluster..."
