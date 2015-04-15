@@ -14,7 +14,7 @@ fi
 
 
 ARG=`action-get num-different-keys`
-if [ -n "$ARG" ] && ["$ARG" -gt "0"]; then
+if [[ -n "$ARG" && "$ARG" -gt "0" ]]; then
     ARGS+=" -F $ARG"
 fi
 
@@ -139,7 +139,7 @@ if [ -n "$ARG" ]; then
 fi
 
 ARG=`action-get native-protocol`
-if [ "$ARG" ] && [ "$ARG" eq "True"]; then
+if [ -z "$ARG" ]  && [ "$ARG" eq "True" ]; then
     ARGS+=" --enable-native-protocol"
 fi
 
