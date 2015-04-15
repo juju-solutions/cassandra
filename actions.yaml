@@ -128,8 +128,8 @@ stress:
       default: 5
     num-keys:
       description: Number of keys
-      type: string
-      default: "1000000"
+      type: integer
+      default: 1000000
     operations:
       description: |
         Operation to perform (INSERT, READ, RANGE_SLICE, INDEXED_RANGE_SLICE,
