@@ -127,9 +127,10 @@ stress:
       type: integer
       default: 5
     num-keys:
+      # Integer overflow bug: http://pad.lv/1302118
       description: Number of keys
-      type: integer
-      default: 1000000
+      type: string
+      default: "1000000"
     operations:
       description: |
         Operation to perform (INSERT, READ, RANGE_SLICE, INDEXED_RANGE_SLICE,
