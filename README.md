@@ -78,7 +78,8 @@ during normal operation as more memory is allocated to heap.
 
 The Cassandra charm is capable of running benchmarks against the deployed service(s).
 
-    juju action do cassandra/0 stress num-keys=1000
+    juju action do cassandra/0 stress num-keys='1000' --string-args
+
 
 # Contact Information
 
