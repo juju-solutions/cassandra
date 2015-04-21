@@ -49,7 +49,55 @@ def parse_stress_output():
             for idx, field in enumerate(header):
                 result[field] = fields[idx]
             results.append(result)
+
     action_set("results.raw", json.dumps(results))
+
+    total = dict.fromkeys(header, 0.0)
+    for result in results:
+        for key in result:
+            total[key] += float(result[key])
+
+    action_set(
+        "results.interval-key-rate",
+        {
+            'value': total['interval_key_rate'],
+            'units': 'keys/sec'
+        }
+    )
+    action_set(
+        "results.95th",
+        {'value': total['95th'], 'units': 'percentile'}
+    )
+    action_set(
+        "results.latency",
+        {'value': total['latency'], 'units': 'seconds'}
+    )
+    action_set(
+        "results.99th",
+        {'value': total['99th'], 'units': 'percentile'}
+    )
+    action_set(
+        "results.elapsed",
+        {'value': total['elapsed'], 'units': 'seconds'}
+    )
+    action_set(
+        "results.interval-op-rate",
+        {'value': total['interval_op_rate'], 'units': 'ops/second'}
+    )
+    action_set(
+        "results.total",
+        {'value': total['total'], 'units': 'ops'}
+    )
+
+    # Set the composite key
+    action_set(
+        "meta.composite",
+        {'value': total['interval_op_rate'], 'units': 'ops/second'}
+    )
+    action_set(
+        "meta.composite.direction",
+        'desc'
+    )
 
 
 if __name__ == "__main__":
