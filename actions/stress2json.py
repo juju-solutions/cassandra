@@ -6,6 +6,7 @@ and reformat them as JSON for sending back to juju
 import sys
 import subprocess
 import json
+from charmhelpers.contrib.benchmark import Benchmark
 
 
 def action_set(key, val):
@@ -89,23 +90,11 @@ def parse_stress_output():
         {'value': total['total'], 'units': 'ops'}
     )
 
-    try:
-        from charmhelpers.contrib.benchmark import Benchmark
-        Benchmark.set_composite_score(
-            total['interval_op_rate-rate'],
-            'units',
-            'desc'
-        )
-    except:
-        # Set the composite key
-        action_set(
-            "meta.composite",
-            {
-                'value': total['interval_op_rate'],
-                'units': 'ops/second',
-                'direction': 'desc'
-            }
-        )
+    Benchmark.set_composite_score(
+        total['interval_op_rate'],
+        'ops/sec',
+        'desc'
+    )
 
 
 if __name__ == "__main__":
