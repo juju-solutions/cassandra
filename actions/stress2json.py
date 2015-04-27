@@ -89,15 +89,23 @@ def parse_stress_output():
         {'value': total['total'], 'units': 'ops'}
     )
 
-    # Set the composite key
-    action_set(
-        "meta.composite",
-        {'value': total['interval_op_rate'], 'units': 'ops/second'}
-    )
-    action_set(
-        "meta.composite.direction",
-        'desc'
-    )
+    try:
+        from charmhelpers.contrib.benchmark import Benchmark
+        Benchmark.set_composite_score(
+            total['interval_op_rate-rate'],
+            'units',
+            'desc'
+        )
+    except:
+        # Set the composite key
+        action_set(
+            "meta.composite",
+            {
+                'value': total['interval_op_rate'],
+                'units': 'ops/second',
+                'direction': 'desc'
+            }
+        )
 
 
 if __name__ == "__main__":
