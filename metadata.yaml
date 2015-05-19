@@ -17,3 +17,7 @@ provides:
 peers:
   cluster:
     interface: cassandra-cluster
+requires:
+  benchmark:
+    interface: benchmark
+  
