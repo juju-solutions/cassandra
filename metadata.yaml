@@ -14,10 +14,8 @@ provides:
   nrpe-external-master:
     interface: nrpe-external-master
     scope: container
+  benchmark:
+    interface: benchmark
 peers:
   cluster:
     interface: cassandra-cluster
-requires:
-  benchmark:
-    interface: benchmark
-  
