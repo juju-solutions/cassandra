@@ -1,7 +1,12 @@
 #!/bin/bash
 set -eux
 
-chlp benchmark-start || true
+. actions/common
+
+install_charmbenchmark
+benchmark_actions || true
+
+benchmark-start || true
 
 # /etc/cassandra/cassandra.yaml - listen_address: 10.0.3.124
 ARGS=''
@@ -208,4 +213,4 @@ cassandra-stress -f /opt/cassandra-stress/results/$run/stress.log -d $NODES $ARG
 # Parse the results
 `cat /opt/cassandra-stress/results/$run/stress.log | python $CHARM_DIR/actions/stress2json.py`
 
-chlp benchmark-finish || true
+benchmark-finish || true
