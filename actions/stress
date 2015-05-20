@@ -1,9 +1,8 @@
 #!/bin/bash
 set -eux
 
-chlp benchmark-start || true
+apt-get install -y python-pip && pip install charm-benchmark
 
-# /etc/cassandra/cassandra.yaml - listen_address: 10.0.3.124
 ARGS=''
 KEYSPACE='Keyspace1'
 
@@ -203,9 +202,11 @@ NODES=`grep listen_address /etc/cassandra/cassandra.yaml | awk '{print $2}'| hea
 run=`date +%s`
 mkdir -p /opt/cassandra-stress/results/$run
 
+benchmark-start
+
 cassandra-stress -f /opt/cassandra-stress/results/$run/stress.log -d $NODES $ARGS
+
+benchmark-finish
 
 # Parse the results
 `cat /opt/cassandra-stress/results/$run/stress.log | python $CHARM_DIR/actions/stress2json.py`
-
-chlp benchmark-finish || true
